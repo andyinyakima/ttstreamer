@@ -1,0 +1,10 @@
+# Prosser_ATSC center frequencies
+
+A 183000000 8VSB
+
+A 213000000 8VSB
+
+A 581000000 8VSB
+
+A 605000000 8VSB
+

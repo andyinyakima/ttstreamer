@@ -1,0 +1,148 @@
+README Take off of tttuner
+
+This program is in beta stage. Started developing on Kernel v 2.6 am now using v 3.5.0
+
+My approach is not to reinvent the wheel but enhance the use of the wheel.
+Also the program was developed with a technicians point of view. Am always looking for
+ways to improve monitoring tuner streams.
+Portability also, I want this to work on a laptop, albeit a powerful laptop with USB 3.
+
+Ok,
+
+"tttuner" is basically a 4 tuner monitor just for ATSC,maybe later; a version for all types of digital tuners.
+
+NEEDED:
+
+This version needs to be compiled using Qt which can be gotten at
+http://qt-project.org/downloads.
+After installing Qt you need to install OpenGL:
+
+	sudo apt-get install freeglut3-dev
+
+
+After installing Qt "open project" by going to the folder where you placed
+the files. 
+
+	1)main.cpp
+	2)tttuner.cpp
+	3)tttuner.h
+	4)tttuner.ui
+	5)TTTuner1.pro	
+	6)README (this file)
+
+Open TTTuner1.pro; it contains the info that Qt needs.
+
+You also need "scan" which can be installed using:
+
+ 	sudo apt-get install dvb-apps
+
+
+
+One more item needed is VLC 3.0.0:
+
+	sudo add-apt-repository ppa:videolan/master-daily
+	sudo apt-get update
+	sudo apt-get install vlc
+
+After downloading vlc execute it and go into Tools/Preferences. Uncheck the box for single instance;
+ you want multiple instances of vlc. 
+
+ 
+
+Using mpv to create streams:
+
+  	sudo add-apt-repository ppa:mc3man/mpv-tests
+  	sudo apt update && sudo apt install mpv
+
+For qtcreator you need to install:
+
+	sudo apt-get install qtmultimedia5-dev
+
+
+After successfully compiling you should have a gui with 4 adapter groups 0-3,
+each group will have a box that states type of tuner. ATSC adapters will
+be enabled. Make sure the Service Scan button is checked, then press the "Tune"
+button. w_scan (scan) should take over and scan, which you can observe in the left browser.
+After successful scan it will produce a Channel list in the right browser; the
+channel numbers can be placed in the enabled boxes and if they a legitimate channels will
+turn red. Tuner functions are Create Streams, Show Videos and TuneTo; select one of these
+and press "Tune". 
+
+added 11 Jan 2022 for Hauppauge tuners-----------------
+First, determine the version of Ubuntu you are running
+To do this, run this command:
+
+dpkg -l | grep linux-image-generic-hwe
+
+If a line is displayed beginning with "ii", then you are running the HWE version of Ubuntu. You will need to know if you are running HWE this in a moment when you install the mediatree.
+
+Download the PPA
+
+sudo add-apt-repository ppa:b-rad/kernel+mediatree+hauppauge
+
+After this first line, click enter when prompted to add this PPA.
+
+sudo apt-get update
+
+Install the media tree
+
+If you are running an HWE version of Ubuntu, use this command:
+
+sudo apt-get install linux-hwe-mediatree
+
+If you are NOT running HWE, use this command:
+
+sudo apt-get install linux-mediatree
+Firmware Install
+
+At this point, you also need to install TV firmware if you are using one of the following TV tuners (most North American TV tuners do NOT need firmware to be loaded, so this mainly applies to European/ANZ tuners):
+
+    a Hauppauge DVB TV tuner in Europe, Australia or New Zealand (example: WinTV-soloHD, WinTV-dualHD, WinTV-quadHD, WinTV-HVR-5525, Starburst 2, etc.)
+    461e or WinTV-NOVA-S2
+    WinTV-quadHD USB for North America
+
+To download and install Hauppauge TV tuner firmware, run this command:
+
+sudo apt-get install linux-firmware-hauppauge
+
+Close Terminal and restart your computer.
+
+You can now connect your Hauppauge WinTV TV tuner to your computer and it should be available for use by your Linux TV watching application. 
+
+end of Happauge addition---------------------------
+
+
+That's it for now, 
+
+Comments :
+andylaberge@linux.com
+
+
+Addendum: 2July2016
+
+Made some modifications- removed w_scan because it wouldn't create the correct zap files.
+Installed "scan" in its place. VLC has been replaced with mpv it is much more manageable.
+Am using UDP instead of RTP to for the communication protocol. 
+
+This will be added to bitbucket using git instead of mercurial.
+
+07 March 2019 
+
+Added multicast addressing .i.e address box defaults to 127.0.0.1 but can be edited to 239.1.1.234 or 
+similar multicast address 
+
+Added two "scan" files, yakima_ATSC.txt has the frequencies for Yakima un-commented so that
+they will be picked up during a scan. USA_ATSC.txt is fully commented, just un-comment the
+# marks for your area frequencies and those stations will be scanned in.
+
+
+
+sudo apt install qtcreator
+sudo apt install qt5-default
+
+# Clang Code Model was a nuisance after Qt Creator 4.11.0 Qt 5.12.8
+#Go into Help->About Plugins and uncheck the Clang code model plugin.
+#You have to restart qt creator after that to make it take effect.
+#I had the same problem when debugging a unit test. I was debugging code
+#not in the project itself and it was dying repeatedly on me sending tons of kernel messages.
+
