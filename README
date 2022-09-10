@@ -1,4 +1,5 @@
 README Take off of tttuner
+WILL EDIT AS NECESSARY
 
 This program is in beta stage. Started developing on Kernel v 2.6 am now using v 3.5.0
 
@@ -9,7 +10,7 @@ Portability also, I want this to work on a laptop, albeit a powerful laptop with
 
 Ok,
 
-"tttuner" is basically a 4 tuner monitor just for ATSC,maybe later; a version for all types of digital tuners.
+"ttstreamer" is basically a 4 tuner streamer just for ATSC,maybe later; a version for all types of digital tuners.
 
 NEEDED:
 
@@ -24,8 +25,8 @@ After installing Qt "open project" by going to the folder where you placed
 the files. 
 
 	1)main.cpp
-	2)tttuner.cpp
-	3)tttuner.h
+	2)ttstreamer.cpp
+	3)ttstreamer.h
 	4)tttuner.ui
 	5)TTTuner1.pro	
 	6)README (this file)
