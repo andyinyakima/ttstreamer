@@ -146,3 +146,15 @@ sudo apt install qt5-default
 #I had the same problem when debugging a unit test. I was debugging code
 #not in the project itself and it was dying repeatedly on me sending tons of kernel messages.
 
+// Oct 18 2022 
+ // had a site where ch 8 had a port number of 801 and the "ttviewer" would not play
+ // I then decided to make a single digit channel number have a 4 prepended to their port number
+ // had to go with 4 as 1-3 were allocated to 10-36
+ // so that hopefully it will play on ttviewer
+ // tested it on ch 8 and it worked !!
+
+
+// also added: QMAKE_LFLAGS += -no-pie # this allows me to make a desktop Icon that runs when pressed
+// to 'ttsreamer.pro'
+// this allows me to copy an icon for ttstreamer from the build directory onto my Desktop this icon will run ttstreamer 
+

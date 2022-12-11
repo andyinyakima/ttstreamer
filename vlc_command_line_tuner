@@ -1,0 +1,37 @@
+vlc_command_line_tuner
+
+vlc atsc://frequency=57000000 #channel 2
+vlc atsc://frequency=63000000  # channel 3
+vlc atsc://frequency=69000000  # channel 4
+vlc atsc://frequency=79000000  # channel 5
+vlc atsc://frequency=85000000  # channel 6
+vlc atsc://frequency=177000000  # channel 7
+vlc atsc://frequency=183000000  # channel 8
+vlc atsc://frequency=189000000  # channel 9
+vlc atsc://frequency=195000000  # channel 10
+vlc atsc://frequency=201000000  # channel 11
+vlc atsc://frequency=207000000  # channel 12
+vlc atsc://frequency=213000000  # channel 13
+vlc atsc://frequency=473000000  # channel 14
+vlc atsc://frequency=479000000  # channel 15
+vlc atsc://frequency=485000000  # channel 16
+vlc atsc://frequency=491000000  # channel 17
+vlc atsc://frequency=497000000  # channel 18
+vlc atsc://frequency=503000000  # channel 19
+vlc atsc://frequency=509000000  # channel 20
+vlc atsc://frequency=515000000  # channel 21
+vlc atsc://frequency=521000000  # channel 22
+vlc atsc://frequency=527000000  # channel 23
+vlc atsc://frequency=533000000  # channel 24
+vlc atsc://frequency=539000000  # channel 25
+vlc atsc://frequency=545000000  # channel 26
+vlc atsc://frequency=551000000  # channel 27
+vlc atsc://frequency=557000000  # channel 28
+vlc atsc://frequency=563000000  # channel 29
+vlc atsc://frequency=569000000  # channel 30
+vlc atsc://frequency=575000000  # channel 31
+vlc atsc://frequency=581000000  # channel 32
+vlc atsc://frequency=587000000  # channel 33
+vlc atsc://frequency=593000000  # channel 34
+vlc atsc://frequency=599000000  # channel 35
+vlc atsc://frequency=605000000  # channel 36

@@ -32,7 +32,7 @@ HEADERS  += tts.h
 
 FORMS    += tts.ui
 CONFIG += c++11
-
+QMAKE_LFLAGS += -no-pie # this allows me to make a desktop Icon that runs when pressed
 
 # Clang Code Model was a nuisance after Qt Creator 4.11.0 Qt 5.12.8
 #Go into Help->About Plugins and uncheck the Clang code model plugin.

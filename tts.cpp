@@ -271,8 +271,213 @@ void tts::readScan()
 
 }
 
+void tts::ShowVideos()
+{
+        int cnt;
+        QString line;
+
+    //    int foundfreq;
+        int foundprog;
+        int linelen;
+        int flag_en;
+
+        QString programs;
+        QString prognum;
+        QString destination;
+        QString destAll;
+        QString homepathrd = QDir::homePath();
+
+        QString homepath = QDir::homePath();
+
+        homepath.append("/tts_vlm.conf");
 
 
+        QFile file(homepath);
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+                 return ;
+        QString cntText;
+        QString tunerNew;
+        QString tunerSetup;
+        QString tunerOutput;
+        QString tunerControl;
+        QString frequency;
+
+        homepathrd.append("/tts.reconf");
+        QFile filein(homepathrd);
+        filein.open(QIODevice::ReadOnly | QIODevice::Text);
+
+        QTextStream streamin(&filein);
+
+        ui->textBrowser->clear();
+
+        flag_en=ota_enabled_flag;
+        for(cnt=0;cnt<adaptersEn;cnt++)
+        {
+           // cntText= QString::number(cnt);
+
+            if((flag_en & 0x01)==0x01)
+            {
+                cntText="0";
+                flag_en-=0x01;
+            }
+            else if((flag_en & 0x02)==0x02)
+            {
+                cntText="1";
+                flag_en-=0x02;
+            }
+            else if((flag_en & 0x04)==0x04)
+            {
+                cntText="2";
+                flag_en-=0x04;
+            }
+            else if((flag_en & 0x08)==0x08)
+            {
+                cntText="3";
+                flag_en-=0x08;
+            }
+
+            tunerNew="new tuner_"+cntText+" broadcast enabled\n";
+
+            ui->textBrowser->insertPlainText(tunerNew);
+
+        }
+
+         ui->textBrowser->insertPlainText("\n\n");
+
+
+         flag_en=ota_enabled_flag;
+         for(cnt=0;cnt<adaptersEn;cnt++)
+         {
+             // cntText= QString::number(cnt);
+             if((flag_en & 0x01)==0x01)
+             {
+                 cntText="0";
+                 flag_en-=0x01;
+             }
+             else if((flag_en & 0x02)==0x02)
+             {
+                 cntText="1";
+                 flag_en-=0x02;
+             }
+             else if((flag_en & 0x04)==0x04)
+             {
+                 cntText="2";
+                 flag_en-=0x04;
+             }
+             else if((flag_en & 0x08)==0x08)
+             {
+                 cntText="3";
+                 flag_en-=0x08;
+             }
+
+
+             tunerSetup="setup tuner_"+cntText+" input 'atsc://'\n";
+              ui->textBrowser->insertPlainText(tunerSetup);
+              tunerSetup="setup tuner_"+cntText+" option dvb-adapter="+cntText+"\n";
+              ui->textBrowser->insertPlainText(tunerSetup);
+             // now insert the frequency of the selected channel for the adapter
+             // adapter0 = tuner group a
+              if(cntText=="0")
+                 frequency=QString::number(ui->FrequencyA->intValue());
+              else if(cntText=="1")
+                  frequency=QString::number(ui->FrequencyB->intValue());
+              else if(cntText=="2")
+                  frequency=QString::number(ui->FrequencyC->intValue());
+              else if(cntText=="3")
+                  frequency=QString::number(ui->FrequencyD->intValue());
+
+              tunerSetup="setup tuner_"+cntText+" option dvb-frequency="+frequency+"000\n";
+              ui->textBrowser->insertPlainText(tunerSetup);
+       /*
+              tunerSetup="setup tuner_"+cntText+" option dvb-modulation=8VSB\n";
+              ui->textBrowser->insertPlainText(tunerSetup);
+
+              programs="programs=";
+              while(!filein.atEnd())
+              {
+                  line = filein.readLine(0);
+                  linelen=line.length();
+                  if(line.contains(frequency)==true)
+                  {
+                     destination="dst=display,select= program=";
+                     foundprog=line.indexOf("program=");
+                     prognum=line.mid(foundprog+8,(linelen-1)-(foundprog+8));
+                     prognum.append(",");
+                     programs.append(prognum);
+                     destination.append(prognum);
+                     destAll.append(destination);
+
+
+                  }
+
+
+              }
+              tunerSetup="setup tuner_"+cntText+" option "+programs+"\n" ;
+              tunerOutput="setup tuner_"+cntText+" output '#duplicate{"+destAll+"}'\n";
+              destAll.clear();
+              filein.seek(0);
+*/
+              ui->textBrowser->insertPlainText(tunerSetup);
+              ui->textBrowser->insertPlainText("\n");
+             ui->textBrowser->insertPlainText(tunerOutput);
+
+             ui->textBrowser->insertPlainText("\n");
+
+
+        }
+          streamin.flush();
+          filein.close();
+
+         flag_en=ota_enabled_flag;
+         for(cnt=0;cnt<adaptersEn;cnt++)
+         {
+            //cntText=QString::number(cnt);
+             if((flag_en & 0x01)==0x01)
+             {
+                 cntText="0";
+                 flag_en-=0x01;
+             }
+             else if((flag_en & 0x02)==0x02)
+             {
+                 cntText="1";
+                 flag_en-=0x02;
+             }
+             else if((flag_en & 0x04)==0x04)
+             {
+                 cntText="2";
+                 flag_en-=0x04;
+             }
+             else if((flag_en & 0x08)==0x08)
+             {
+                 cntText="3";
+                 flag_en-=0x08;
+             }
+
+            tunerControl="control tuner_"+cntText+" play\n";
+            ui->textBrowser->insertPlainText(tunerControl);
+
+         }
+         ui->textBrowser->insertPlainText("\n");
+
+        QTextStream out(&file);
+
+        out<<ui->textBrowser->toPlainText();
+     //   file.close();
+        statusBar()->showMessage(tr("File - %1 - Saved")
+                .arg(homepath));
+
+
+
+        QString program  ="vlc";
+        QStringList arguments;
+// added : 24Feb2013 scale from .1 to 1
+
+        arguments<<"--vlm-conf"<<homepath<<"--no-audio"<<"--zoom="+QString::number(ui->ScaleSpinBox->value());
+        vlc->start(program,arguments);
+
+
+}
+/*
 void tts::ShowVideos()
 {
         int cnt;
@@ -469,7 +674,7 @@ void tts::ShowVideos()
 
 
 
-        QString program  ="cvlc";
+        QString program  ="vlc";
         QStringList arguments;
 // added : 24Feb2013 scale from .1 to 1
 
@@ -478,6 +683,7 @@ void tts::ShowVideos()
 
 
 }
+*/
 
 void tts::createStreams()
 {
@@ -520,6 +726,34 @@ void tts::createStreams()
     streamid.clear();
     nameid.clear();
 
+// need to build a file "ttsrtp_vlm.conf" for vlc to stream all the services on an rf channel
+// example of file content is below
+/*
+    new rtp_0 broadcast enabled
+    new rtp_1 broadcast enabled
+
+    setup rtp_0 input 'atsc://'
+    setup rtp_0 option dvb-adapter=0
+    setup rtp_0 option dvb-frequency=515000000
+    setup rtp_0 option dvb-modulation=8VSB
+    setup rtp_0 option programs=3,4,5,6,
+
+    setup rtp_0 output '#duplicate{dst=udp{mux=ts,ttl=12,dst=127.0.0.1:2103},select= program=3,dst=udp{mux=ts,ttl=12,dst=127.0.0.1:2104},select= program=4,dst=udp{mux=ts,ttl=12,dst=127.0.0.1:2105},select= program=5,dst=udp{mux=ts,ttl=12,dst=127.0.0.1:2106},select= program=6,}'
+
+    setup rtp_1 input 'atsc://'
+    setup rtp_1 option dvb-adapter=1
+    setup rtp_1 option dvb-frequency=57000000
+    setup rtp_1 option dvb-modulation=8VSB
+    setup rtp_1 option programs=
+
+    setup rtp_1 output '#duplicate{}'
+
+    control rtp_0 play
+    control rtp_1 play
+
+ */
+// the example above is for two active tuners rtp_0 has an viable signal while rtp_1 has no services or signal
+
     homepath.append("/ttsrtp_vlm.conf");
 
 
@@ -533,6 +767,12 @@ void tts::createStreams()
     QString rtpControl;
     QString frequency;
     QString ch;
+
+// need to borrow info from "tts.reconf" file to help build the "ttsrtp_vlm.conf" file
+// the info in one line of "tts.reconf" looks like below:
+//
+//    CH 32:Name=Azteca:f=581000000:program=1
+//
 
     homepathrd.append("/tts.reconf");
     QFile filein(homepathrd);
@@ -630,6 +870,16 @@ void tts::createStreams()
                 foundch=line.indexOf("CH ");
                 foundcolon=line.indexOf(":");
                 ch=line.mid(foundch+3,foundcolon-(foundch+3));
+ // Oct 18 2022 
+ // had a site where ch 8 had a port number of 801 and the "ttviewer" would not play
+ // I then decided to make a single digit channel number have a 4 prepended to their port number
+ // so that hopefully it will play on ttviewer
+ // tested it on ch 8 and it worked !!
+
+                if(ch.size() < 2){
+                    ch.prepend("4");
+                }
+
                 fnd_name=line.indexOf("Name=");
                 fnd_name_colon=line.indexOf(":",fnd_name+5);
                 int namelen=(fnd_name_colon)-(fnd_name+5);
@@ -639,6 +889,7 @@ void tts::createStreams()
     // ps and raw don't seem to work well in this format
 
     // added: 23feb2013 the IPlineedit for editing IP address 127.0.0.1 is default localhost
+
                 if(ui->udpm_Button->isChecked()==true)
                 {
                     destinationA="dst=udp{mux=ts,ttl=12,dst="+ui->IPlineEdit->text()+":"+ch;     // change to udp or rtp see below
@@ -991,8 +1242,11 @@ void tts::stopTunerA()
         reconfCreate();
 }
 
+
 void tts::reconfCreate()
 {
+    // this function is used to develop the tts.reconf after the initial "scan"
+    // tts.reconf contains info of services available
     // chop down the tts.conf file reorganize and create tts.reconf
     int foundtuneto;
     int foundcolon;
@@ -1083,6 +1337,7 @@ void tts::reconfCreate()
     out.flush();
 
 }
+
 void tts::cnvfrqtchnl(QString temp)
 {
     if(temp=="570")
